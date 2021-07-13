@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>425</width>
+    <height>513</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>AutoOTP</string>
+  </property>
+  <property name="documentMode">
+   <bool>true</bool>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="0" column="0">
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>Bảng Điều Khiển</string>
+      </property>
+      <widget class="QTextEdit" name="InputText">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>381</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QTextEdit{}</string>
+       </property>
+       <property name="placeholderText">
+        <string>Messages to get login code</string>
+       </property>
+      </widget>
+      <widget class="QTextEdit" name="OTPEdit">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>381</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QTextEdit {text-align:center}</string>
+       </property>
+       <property name="placeholderText">
+        <string>Extracted Login Code</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="CreatePhone">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>101</y>
+         <width>131</width>
+         <height>71</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{background:rgb(255, 255, 127); border: 1px solid rgb(255, 199, 231);border-radius:10px}</string>
+       </property>
+       <property name="text">
+        <string>CREATE OTP</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="Phone">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>100</y>
+         <width>240</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit{padding:0px 10px}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>PHONE</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="OTP">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>140</y>
+         <width>240</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit{padding:0px 10px}</string>
+       </property>
+       <property name="placeholderText">
+        <string>OTP</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Create">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>180</y>
+         <width>381</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{background:rgb(255, 255, 127); border: 1px solid rgb(255, 199, 231);border-radius:10px}</string>
+       </property>
+       <property name="text">
+        <string>START CREATE APPLICATION API</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="AppID">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>310</y>
+         <width>381</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit{padding:0px 10px}</string>
+       </property>
+       <property name="placeholderText">
+        <string>APP ID</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="ApiHash">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>350</y>
+         <width>381</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit{padding:0px 10px}</string>
+       </property>
+       <property name="placeholderText">
+        <string>API HASH</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="RegPhone">
+       <property name="geometry">
+        <rect>
+         <x>9</x>
+         <y>390</y>
+         <width>381</width>
+         <height>30</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLineEdit{padding:0px 10px}</string>
+       </property>
+       <property name="placeholderText">
+        <string>PHONE</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Continue">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>240</y>
+         <width>381</width>
+         <height>61</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{background:rgb(255, 255, 127); border: 1px solid rgb(255, 199, 231);border-radius:10px}</string>
+       </property>
+       <property name="text">
+        <string>Already Registed Telegram --&gt; Continue Register App</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="Create_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>430</y>
+         <width>381</width>
+         <height>51</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{background:rgb(255, 255, 127); border: 1px solid rgb(255, 199, 231);border-radius:10px}</string>
+       </property>
+       <property name="text">
+        <string>CHANGE IP</string>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
