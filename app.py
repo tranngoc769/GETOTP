@@ -85,6 +85,7 @@ class PyShine_THREADS_APP(QtWidgets.QMainWindow):
         self.Continue.clicked.connect(self.ContinueApp)
         # Change IP
         self.ChangeIP.clicked.connect(self.ChangeIPFunction)
+        self.readAPI()
     # Next button --> Get login code
     def ContinueApp(self):
         self.thread[3].getOTPCode()
@@ -373,7 +374,10 @@ class ChangeiPThreadClass(QtCore.QThread):
         self.any_signal.terminal()
 app = QtWidgets.QApplication(sys.argv)
 mainWindow = PyShine_THREADS_APP()
-mainWindow.dcom()
+try:
+    mainWindow.dcom()
+except:
+    pass
 mainWindow.chrome()
 mainWindow.show()
 sys.exit(app.exec_())
