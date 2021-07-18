@@ -214,7 +214,7 @@
         <string>Already Registed Telegram --&gt; Continue Register App</string>
        </property>
       </widget>
-      <widget class="QPushButton" name="Create_2">
+      <widget class="QPushButton" name="ChangeIP">
        <property name="geometry">
         <rect>
          <x>10</x>
