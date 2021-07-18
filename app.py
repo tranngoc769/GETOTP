@@ -60,6 +60,10 @@ class PyShine_THREADS_APP(QtWidgets.QMainWindow):
         self.options.add_argument('-disable-dev-shm-usage')
         self.wd = webdriver.Chrome('chromedriver.exe',options=self.options)
         self.wd.set_page_load_timeout(120)
+    def readAPI(self):
+        f = open("api.bin", "r")
+        self.API = f.read()
+        self.API = self.API.strip()
     def __init__(self):
         self.currentPhone = ""
         self.AppOTP = ""
@@ -214,7 +218,7 @@ class PhoneOTPTheadClass(QtCore.QThread):
         self.index=index
         self.is_running = True
     def run(self):
-        url = "https://trumotp.com/apiv1/order?apikey=779c757edbee28427f4228826ad197a1&serviceId=269"
+        url = "https://trumotp.com/apiv1/order?apikey="+self.API+"&serviceId=269"
         payload={}
         headers = {}
         response = requests.request("GET", url, headers=headers, data=payload)
@@ -229,7 +233,7 @@ class PhoneOTPTheadClass(QtCore.QThread):
                 trying += 1
                 time.sleep(1)
                 # id = 773836
-                url = "https://trumotp.com/apiv1/ordercheck?apikey=779c757edbee28427f4228826ad197a1&id="+str(id)
+                url = "https://trumotp.com/apiv1/ordercheck?apikey="+self.API+"&id="+str(id)
                 payload={}
                 headers = {
                 'Cookie': 'ASP.NET_SessionId=5q0ixkfveukforhykvrqkmb4'
