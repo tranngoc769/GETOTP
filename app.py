@@ -36,6 +36,7 @@ from telethon.tl.functions.channels import JoinChannelRequest,LeaveChannelReques
 from gtts import gTTS
 codeFile  = 'otpsound.mp3' 
 import os
+import win32gui
 def codeToSpeech(code):
     try:
         newCode = ""
@@ -57,6 +58,11 @@ def myplaysound(file):
         pass
 DCOM_PATH = "C://Program Files (x86)/Mobile Partner/Mobile Partner.exe"
 class PyShine_THREADS_APP(QtWidgets.QMainWindow):
+    def enumWindowFunc(self,hwnd, windowList):
+        text = win32gui.GetWindowText(hwnd)
+        className = win32gui.GetClassName(hwnd)
+        if 'chromedriver' in text.lower() or 'chromedriver' in className.lower():
+            win32gui.ShowWindow(hwnd, False)
     def dcom(self):
         self.com = Application().start(DCOM_PATH, timeout=60)
         time.sleep(5)
@@ -77,6 +83,7 @@ class PyShine_THREADS_APP(QtWidgets.QMainWindow):
         self.options.add_argument('-disable-dev-shm-usage')
         self.wd = webdriver.Chrome('chromedriver2.exe',options=self.options)
         self.wd.set_page_load_timeout(120)
+        win32gui.EnumWindows(self.enumWindowFunc, [])
     def readAPI(self):
         f = open("api.bin", "r")
         self.API = f.read()
