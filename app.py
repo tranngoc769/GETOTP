@@ -1,6 +1,6 @@
 
 import win32com.client
-from os import path
+from os import extsep, path
 import names
 import requests
 import logging
@@ -33,6 +33,23 @@ from telethon import TelegramClient, client
 from telethon.tl.functions.account import UpdateProfileRequest
 from pywinauto.application import Application
 from telethon.tl.functions.channels import JoinChannelRequest,LeaveChannelRequest
+from gtts import gTTS
+codeFile  = 'otpsound.mp3' 
+import os
+def codeToSpeech(code):
+    try:
+        newCode = ""
+        for item in code:
+            newCode+= " "+str(item)
+        myobj = gTTS(text=newCode, lang='vi', slow=False,)
+        myobj.save(codeFile)
+        playsound(codeFile)
+        time.sleep(2)
+        playsound(codeFile)
+        os.remove(codeFile)
+    except:
+        pass
+    
 def myplaysound(file):
     try:
         playsound(file)
@@ -58,7 +75,7 @@ class PyShine_THREADS_APP(QtWidgets.QMainWindow):
         self.options.add_argument('--disable-gpu')
         self.options.add_argument('--log-level=3')
         self.options.add_argument('-disable-dev-shm-usage')
-        self.wd = webdriver.Chrome('chromedriver.exe',options=self.options)
+        self.wd = webdriver.Chrome('chromedriver2.exe',options=self.options)
         self.wd.set_page_load_timeout(120)
     def readAPI(self):
         f = open("api.bin", "r")
@@ -91,12 +108,26 @@ class PyShine_THREADS_APP(QtWidgets.QMainWindow):
         self.thread[3].getOTPCode()
     # Open Chrome, Create APP #THREAD3
     def CreateApp(self):
-        self.app_data = []
-        self.thread[3] = ChromeThreadClass(parent=None,index=1,wd=self.wd)
-        self.thread[3].any_signal.connect(self.ChromeResonse)
-        self.thread[3].start()
+        try:
+            self.RegPhone.setText("")
+            self.ApiHash.setText("")
+            self.AppID.setText("")
+            self.app_data = []
+            self.thread[3] = ChromeThreadClass(parent=None,index=1,wd=self.wd)
+            self.thread[3].any_signal.connect(self.ChromeResonse)
+            self.thread[3].start()
+        except:
+            myplaysound('LOI.mp3')
+               
     def ChangeIPFunction(self):
-        self.connectBtn.click()
+        try:
+            self.connectBtn.click()
+            time.sleep(2)
+            self.connectBtn.click()
+            time.sleep(4)
+            self.Create.click()
+        except:
+            pass
     def ChromeResonse(self,event,data = []):
         if (event == 1):
             self.GetPhone()
@@ -118,12 +149,18 @@ class PyShine_THREADS_APP(QtWidgets.QMainWindow):
             pass
     def GetPhone(self):
         try:
-            self.thread[2].stop()
-        except :
-            pass
-        self.thread[2] = PhoneOTPTheadClass(parent=None,index=1)
-        self.thread[2].any_signal.connect(self.HandlePHONEEmit)
-        self.thread[2].start()
+            try:
+                os.system('cls' if os.name=='nt' else 'clear')
+                self.InputText.setText("")
+                self.OTPEdit.setText("")
+                self.thread[2].stop()
+            except :
+                pass
+            self.thread[2] = PhoneOTPTheadClass(parent=None,index=1, API = self.API)
+            self.thread[2].any_signal.connect(self.HandlePHONEEmit)
+            self.thread[2].start()
+        except Exception as er:
+            print(er)
     # Handle API Reponse
     def HandlePHONEEmit(self, event):
         s = pyperclip.paste()
@@ -211,60 +248,76 @@ class ClipboardThreadClass(QtCore.QThread):
                 if (len(xx)> 0):
                     pyperclip.copy(str(xx[0]))
                     self.any_signal.emit(2)
+                    codeToSpeech(str(xx[0]))
             time.sleep(1)
 class PhoneOTPTheadClass(QtCore.QThread):
     any_signal = QtCore.pyqtSignal(int)
-    def __init__(self, parent=None,index=0):
+    def __init__(self, parent=None,index=0, API = None):
         super(PhoneOTPTheadClass, self).__init__(parent)
+        self.API = API
         self.index=index
         self.is_running = True
     def run(self):
+        data = None
+        response = None  
         url = "https://trumotp.com/apiv1/order?apikey="+self.API+"&serviceId=269"
-        payload={}
-        headers = {}
-        response = requests.request("GET", url, headers=headers, data=payload)
-        data =  response. json()
-        if data['status'] == 1:
-            trying = 1
-            isOTP = False
-            isPHONE = False
-            id = str(data['id'])
-            while trying < 280 and isOTP == False and self.is_running == True:
-                # test
-                trying += 1
-                time.sleep(1)
-                # id = 773836
-                url = "https://trumotp.com/apiv1/ordercheck?apikey="+self.API+"&id="+str(id)
-                payload={}
-                headers = {
-                'Cookie': 'ASP.NET_SessionId=5q0ixkfveukforhykvrqkmb4'
-                }
-                response = requests.request("GET", url, headers=headers, data=payload)
-                data =  response.json()
-                if data['status'] != 1:
-                    isOTP = False
-                    myplaysound('LOI.mp3')
-                else:
-                    resp = data['data']
-                    phone = resp['phone']
-                    phone = "+84"+phone[1:10]
-                    if (isPHONE == False):
-                        pyperclip.copy(phone.strip())
-                        self.any_signal.emit(1)
-                        isPHONE = True
-                        myplaysound('SDT.mp3')
-                    if (resp['code'] != "" and resp['code'] != None):
-                        print(resp['code'])
-                        isOTP = True
-                        pyperclip.copy(resp['code'].strip())
-                        self.any_signal.emit(2)
-                        myplaysound('OTP.mp3')
-                        return
+        myplaysound('GET.mp3')
+        try:
+            payload={}
+            headers = {}
+            response = requests.request("GET", url, headers=headers, data=payload)
+            data =  response.json()
+            if data['status'] == 1:
+                trying = 1
+                isOTP = False
+                isPHONE = False
+                id = str(data['id'])
+                while trying < 280 and isOTP == False and self.is_running == True:
+                    # test
+                    trying += 1
+                    time.sleep(1)
+                    # id = 773836
+                    url = "https://trumotp.com/apiv1/ordercheck?apikey="+self.API+"&id="+str(id)
+                    payload={}
+                    headers = {
+                    'Cookie': 'ASP.NET_SessionId=5q0ixkfveukforhykvrqkmb4'
+                    }
+                    response = requests.request("GET", url, headers=headers, data=payload)
+                    data =  response.json()
+                    if data['status'] != 1:
+                        isOTP = False
+                        myplaysound('LOI.mp3')
                     else:
-                        pass
-                time.sleep(1)
-        else:
-            playsound("LOI.mp3")
+                        try:
+                            resp = data['data']
+                            phone = resp['phone']
+                            phone = "+84"+phone[1:10]
+                            if (isPHONE == False):
+                                pyperclip.copy(phone.strip())
+                                self.any_signal.emit(1)
+                                isPHONE = True
+                                myplaysound('SDT.mp3')
+                            if (resp['code'] != "" and resp['code'] != None):
+                                print(resp['code'])
+                                isOTP = True
+                                pyperclip.copy(resp['code'].strip())
+                                self.any_signal.emit(2)
+                                myplaysound('OTP.mp3')
+                                codeToSpeech(str(resp['code'].strip()))
+                                return
+                            else:
+                                pass
+                        except  Exception as codeerr:
+                            print(codeerr)
+                            print(data)
+                            myplaysound('LOI.mp3')
+                    time.sleep(1)
+            else:
+                playsound("LOI.mp3")
+        except Exception as xx:
+            print(url)
+            print(response)
+            playsound("TRUMOTP.mp3")
     def stop(self):
         print("Stop")
         self.is_running = False
